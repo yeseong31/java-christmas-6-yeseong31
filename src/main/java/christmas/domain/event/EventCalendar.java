@@ -8,6 +8,7 @@ import static christmas.domain.event.constants.EventType.WEEKDAY_EVENT;
 import static christmas.domain.event.constants.EventType.values;
 import static christmas.service.Parser.convertToDayOfWeek;
 import static christmas.service.Parser.convertToLocalDate;
+import static christmas.view.output.OutputView.NONE_PRICE;
 import static java.time.DayOfWeek.FRIDAY;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.util.Collections.unmodifiableList;
