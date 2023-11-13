@@ -1,5 +1,7 @@
 package christmas.service;
 
+import static christmas.exception.ErrorMessage.INVALID_DATE_RANGE;
+import static christmas.exception.ErrorMessage.INVALID_INTEGER_INPUT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,7 +27,7 @@ class ParserTest {
         @ValueSource(strings = {"1", "5", "31"})
         void 문자열_데이터를_정수형으로_정상적으로_변환한다(String input) {
             assertThatNoException().isThrownBy(
-                    () -> Parser.parseToInt(input)
+                    () -> Parser.parseToInt(input, INVALID_DATE_RANGE)
             );
         }
 
@@ -79,7 +81,7 @@ class ParserTest {
         @ParameterizedTest
         @ValueSource(strings = {"", " ", "\n", "\t", "a", "!", "1 2"})
         void 입력받은_값을_정수형이_아니라면_예외가_발생한다(String input) {
-            assertThatThrownBy(() -> Parser.parseToInt(input))
+            assertThatThrownBy(() -> Parser.parseToInt(input, INVALID_INTEGER_INPUT))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("[ERROR]");
         }

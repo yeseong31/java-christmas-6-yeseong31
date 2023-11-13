@@ -2,9 +2,9 @@ package christmas.service;
 
 import static christmas.domain.event.constants.DateConstraint.FIXED_MONTH;
 import static christmas.domain.event.constants.DateConstraint.FIXED_YEAR;
-import static christmas.exception.ErrorMessage.INVALID_INTEGER_INPUT;
 
 import christmas.exception.ChristmasException;
+import christmas.exception.ErrorMessage;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,11 +35,11 @@ public class Parser {
                 dayOfMonth);
     }
 
-    public static int parseToInt(String input) {
+    public static int parseToInt(String input, ErrorMessage errorMessage) {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException exception) {
-            throw ChristmasException.of(INVALID_INTEGER_INPUT, exception);
+            throw ChristmasException.of(errorMessage, exception);
         }
     }
 

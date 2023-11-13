@@ -1,5 +1,6 @@
 package christmas.view.input;
 
+import static christmas.exception.ErrorMessage.INVALID_INTEGER_INPUT;
 import static christmas.service.Parser.parseToInt;
 import static christmas.service.Parser.splitByDelimiter;
 import static christmas.view.input.InputValidator.validateDate;
@@ -18,7 +19,7 @@ public class InputView {
     public int readDate() {
         String input = readLine();
         validateDate(input);
-        return parseToInt(input);
+        return parseToInt(input, INVALID_INTEGER_INPUT);
     }
 
     public List<String> readMenuAndAmountStrings() {
