@@ -15,7 +15,6 @@ import static christmas.service.Parser.convertToLocalDate;
 import static christmas.service.Parser.parseToInt;
 import static christmas.service.Parser.splitByDelimiter;
 import static christmas.view.input.InputValidator.validateStringWithSeparator;
-import static christmas.view.input.InputView.MENU_AND_AMOUNT_SEPARATOR;
 import static christmas.view.output.OutputView.NONE_PRICE;
 
 import christmas.exception.ChristmasException;
@@ -32,6 +31,7 @@ public class Orders {
     private static final int DECREASE_DAY_OF_MONTH = 1;
     private static final int MINIMUM_PURCHASE_PRICE = 10000;
     private static final int ELIGIBLE_GIFT_EVENT_PRIZE = 120000;
+    private static final String MENU_AND_AMOUNT_SEPARATOR = "-";
 
     private final Map<String, Order> orders;
     private final LocalDate day;
@@ -151,7 +151,7 @@ public class Orders {
     }
 
     private static int receiveAmount(List<String> menuAndAmount) {
-        return parseToInt(menuAndAmount.get(AMOUNT_INDEX));
+        return parseToInt(menuAndAmount.get(AMOUNT_INDEX), INVALID_ORDERS_INPUT);
     }
 
     private static String receiveMenu(List<String> menuAndAmount) {
