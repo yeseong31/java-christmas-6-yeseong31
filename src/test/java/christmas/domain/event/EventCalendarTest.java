@@ -1,11 +1,18 @@
 package christmas.domain.event;
 
+import static christmas.domain.event.constants.EventType.CHRISTMAS_EVENT;
+import static christmas.domain.event.constants.EventType.GIFT_EVENT;
+import static christmas.domain.event.constants.EventType.SPECIAL_EVENT;
+import static christmas.domain.event.constants.EventType.WEEKDAY_EVENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import christmas.domain.event.constants.EventType;
+import christmas.domain.order.Orders;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -25,6 +32,47 @@ class EventCalendarTest {
         void of(int dayOfMonth) {
             assertThatNoException().isThrownBy(
                     () -> EventCalendar.of(dayOfMonth));
+        }
+
+        @DisplayName("할인 후 예상 결제 금액을 계산한다")
+        @ParameterizedTest
+        @CsvSource("3,티본스테이크-1 바비큐립-1 초코케이크-2 제로콜라-1")
+        void calculateEstimatedPriceAfterDiscount(int dayOfMonth, String input) {
+            List<String> menuAmounts = List.of(input.split(" "));
+            Orders orders = Orders.from(menuAmounts, dayOfMonth);
+
+            EventCalendar eventCalendar = EventCalendar.of(dayOfMonth);
+            assertThat(eventCalendar.calculateEstimatedPriceAfterDiscount(orders))
+                    .isEqualTo(135754);
+        }
+
+        @DisplayName("총혜택 금액을 계산한다")
+        @ParameterizedTest
+        @CsvSource("3,티본스테이크-1 바비큐립-1 초코케이크-2 제로콜라-1")
+        void receiveTotalBenefitPrice(int dayOfMonth, String input) {
+            List<String> menuAmounts = List.of(input.split(" "));
+            Orders orders = Orders.from(menuAmounts, dayOfMonth);
+
+            EventCalendar eventCalendar = EventCalendar.of(dayOfMonth);
+            assertThat(eventCalendar.receiveTotalBenefitPrice(orders))
+                    .isEqualTo(31246);
+        }
+
+        @DisplayName("혜택 내역 정보를 구성한다")
+        @ParameterizedTest
+        @CsvSource("3,티본스테이크-1 바비큐립-1 초코케이크-2 제로콜라-1")
+        void receiveBenefitDetails(int dayOfMonth, String input) {
+            List<String> menuAmounts = List.of(input.split(" "));
+            Orders orders = Orders.from(menuAmounts, dayOfMonth);
+
+            EventCalendar eventCalendar = EventCalendar.of(dayOfMonth);
+            Map<EventType, Integer> details = eventCalendar.receiveBenefitDetails(orders);
+
+            assertAll(
+                    () -> assertThat(details.get(CHRISTMAS_EVENT)).isEqualTo(1200),
+                    () -> assertThat(details.get(WEEKDAY_EVENT)).isEqualTo(4046),
+                    () -> assertThat(details.get(SPECIAL_EVENT)).isEqualTo(1000),
+                    () -> assertThat(details.get(GIFT_EVENT)).isEqualTo(25000));
         }
 
         @DisplayName("전달받은 날짜에 대한 이벤트 목록을 반환한다")
