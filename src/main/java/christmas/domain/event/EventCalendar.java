@@ -1,6 +1,7 @@
 package christmas.domain.event;
 
 import static christmas.domain.event.constants.EventType.CHRISTMAS_EVENT;
+import static christmas.domain.event.constants.EventType.GIFT_EVENT;
 import static christmas.domain.event.constants.EventType.HOLIDAY_EVENT;
 import static christmas.domain.event.constants.EventType.SPECIAL_EVENT;
 import static christmas.domain.event.constants.EventType.WEEKDAY_EVENT;
@@ -13,10 +14,13 @@ import static java.util.Collections.unmodifiableList;
 
 import christmas.domain.event.constants.EventType;
 import christmas.domain.order.Order;
+import christmas.domain.order.Orders;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventCalendar {
 
@@ -36,6 +40,61 @@ public class EventCalendar {
         final List<EventType> events = receiveApplicableEvents(dayOfMonth);
         final Order eventMenu = generateEventMenu();
         return new EventCalendar(events, eventMenu);
+    }
+
+    public int calculateEstimatedPriceAfterDiscount(final Orders orders) {
+        int sumValue = receiveBenefitDetailsWithoutGiftEvent(orders).values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        return orders.receiveTotalOrderPrice() - sumValue;
+    }
+
+    public int receiveTotalBenefitPrice(final Orders orders) {
+        return receiveBenefitDetails(orders).values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
+
+    public Map<EventType, Integer> receiveBenefitDetails(final Orders orders) {
+        Map<EventType, Integer> result = receiveBenefitDetailsWithoutGiftEvent(orders);
+
+        if (orders.isEligibleForPrize()) {
+            result.put(GIFT_EVENT, receiveEventMenuPrice());
+        }
+
+        return result;
+    }
+
+    private Map<EventType, Integer> receiveBenefitDetailsWithoutGiftEvent(Orders orders) {
+        Map<EventType, Integer> result = new HashMap<>();
+
+        for (EventType eventType : events) {
+            int discountPrice = calculateDiscountPrice(orders, eventType);
+            if (discountPrice > NONE_PRICE) {
+                result.put(eventType, discountPrice);
+            }
+        }
+
+        return result;
+    }
+
+    private int calculateDiscountPrice(Orders orders, EventType eventType) {
+        if (eventType == CHRISTMAS_EVENT) {
+            return orders.receiveChristmasEventDiscountPrice();
+        }
+        if (eventType == WEEKDAY_EVENT) {
+            return orders.receiveWeekdayEventDiscountPrice();
+        }
+        if (eventType == HOLIDAY_EVENT) {
+            return orders.receiveHolidayEventDiscountPrice();
+        }
+        if (eventType == SPECIAL_EVENT) {
+            return orders.receiveSpecialEventDiscountPrice();
+        }
+        return 0;
     }
 
     public List<EventType> receiveTargetEvents() {
@@ -105,15 +164,15 @@ public class EventCalendar {
     }
 
     private static boolean isDayOfMonthWithinRange(final EventType eventType, final int dayOfMonth) {
-        return isGreaterThanStartEventDay(eventType, dayOfMonth)
-                && isSmallerThanEndEventDay(eventType, dayOfMonth);
+        return isGreaterThanStartEventDate(eventType, dayOfMonth)
+                && isSmallerThanEndEventDate(eventType, dayOfMonth);
     }
 
-    private static boolean isSmallerThanEndEventDay(final EventType eventType, final int dayOfMonth) {
+    private static boolean isSmallerThanEndEventDate(final EventType eventType, final int dayOfMonth) {
         return eventType.getEndDate() >= dayOfMonth;
     }
 
-    private static boolean isGreaterThanStartEventDay(final EventType eventType, final int dayOfMonth) {
+    private static boolean isGreaterThanStartEventDate(final EventType eventType, final int dayOfMonth) {
         return eventType.getStartDate() <= dayOfMonth;
     }
 }
