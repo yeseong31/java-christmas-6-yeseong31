@@ -19,6 +19,7 @@ import christmas.domain.event.EventCalendar;
 import christmas.domain.event.constants.EventBadge;
 import christmas.domain.event.constants.EventType;
 import christmas.domain.order.Orders;
+import christmas.exception.ChristmasException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -134,6 +135,10 @@ public class OutputView {
 
         int price = eventCalendar.receiveTotalBenefitPrice(orders);
         println(EventBadge.receiveBadge(price).getName());
+    }
+
+    public static void printErrorMessage(final ChristmasException exception) {
+        System.out.println(exception.getMessage());
     }
 
     private void println(final String message) {
