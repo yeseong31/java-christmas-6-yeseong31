@@ -19,9 +19,8 @@ import static christmas.view.output.OutputView.NONE_PRICE;
 
 import christmas.exception.ChristmasException;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Orders {
 
@@ -33,16 +32,16 @@ public class Orders {
     private static final int ELIGIBLE_GIFT_EVENT_PRIZE = 120000;
     private static final String MENU_AND_AMOUNT_SEPARATOR = "-";
 
-    private final Map<String, Order> orders;
+    private final List<Order> orders;
     private final LocalDate day;
 
-    private Orders(final Map<String, Order> orders, final LocalDate day) {
+    private Orders(final List<Order> orders, final LocalDate day) {
         this.orders = orders;
         this.day = day;
     }
 
     public static Orders from(final List<String> ordersInput, final int dayOfMonth) {
-        final Map<String, Order> orders = generateOrders(ordersInput);
+        final List<Order> orders = initializeOrders(ordersInput);
         final LocalDate day = convertToLocalDate(dayOfMonth);
         return new Orders(orders, day);
     }
@@ -59,8 +58,7 @@ public class Orders {
             return NONE_PRICE;
         }
 
-        return orders.values()
-                .stream()
+        return orders.stream()
                 .filter(Order::isMainDishMenu)
                 .map(order -> order.receiveDiscountPrice(HOLIDAY_DISCOUNT))
                 .reduce(INITIAL_SUM_VALUE, Integer::sum);
@@ -71,8 +69,7 @@ public class Orders {
             return NONE_PRICE;
         }
 
-        return orders.values()
-                .stream()
+        return orders.stream()
                 .filter(Order::isDessertMenu)
                 .map(order -> order.receiveDiscountPrice(WEEKDAY_DISCOUNT))
                 .reduce(INITIAL_SUM_VALUE, Integer::sum);
@@ -94,67 +91,70 @@ public class Orders {
     }
 
     public int receiveTotalOrderPrice() {
-        return orders.values().stream()
+        return orders.stream()
                 .map(Order::receiveOrderPrice)
                 .reduce(INITIAL_SUM_VALUE, Integer::sum);
     }
 
     public List<String> receiveOrdersInfo() {
-        return orders.values()
-                .stream()
+        return orders.stream()
                 .map(Order::toString)
                 .toList();
     }
 
-    private int calculateChristmasEventDiscountPrice(int dayOfMonth) {
+    private int calculateChristmasEventDiscountPrice(final int dayOfMonth) {
         return CHRISTMAS_BASE_DISCOUNT.getDiscountPrice() + incrementAmountByDate(dayOfMonth);
     }
 
-    private int incrementAmountByDate(int dayOfMonth) {
+    private int incrementAmountByDate(final int dayOfMonth) {
         return (dayOfMonth - DECREASE_DAY_OF_MONTH) * CHRISTMAS_INCREASE_DISCOUNT.getDiscountPrice();
     }
 
-    private static Map<String, Order> generateOrders(List<String> ordersInput) {
-        final Map<String, Order> orders = new HashMap<>();
-
-        for (String orderInput : ordersInput) {
-            validateStringWithSeparator(orderInput, MENU_AND_AMOUNT_SEPARATOR);
-
-            final List<String> menuAndAmount = splitByDelimiter(orderInput, MENU_AND_AMOUNT_SEPARATOR);
-            String menuName = receiveMenu(menuAndAmount);
-            int amount = receiveAmount(menuAndAmount);
-
-            validateDuplicateMenu(orders, menuName);
-            orders.put(menuName, Order.from(menuName, amount));
-        }
+    private static List<Order> initializeOrders(final List<String> ordersInput) {
+        final List<Order> orders = generateOrders(ordersInput);
 
         validateOrders(orders);
         return orders;
     }
 
-    private static void validateOrders(Map<String, Order> orders) {
+    private static List<Order> generateOrders(final List<String> ordersInput) {
+        final List<Order> orders = new ArrayList<>();
+
+        for (String orderInput : ordersInput) {
+            validateStringWithSeparator(orderInput, MENU_AND_AMOUNT_SEPARATOR);
+
+            final List<String> menuAndAmount = splitByDelimiter(orderInput, MENU_AND_AMOUNT_SEPARATOR);
+            final Order order = Order.from(receiveMenu(menuAndAmount), receiveAmount(menuAndAmount));
+
+            validateDuplicateMenu(orders, order);
+            orders.add(order);
+        }
+
+        return orders;
+    }
+
+    private static void validateOrders(final List<Order> orders) {
         if (areAllOrdersBeverage(orders)) {
             throw ChristmasException.from(INVALID_ORDERS_INPUT);
         }
     }
 
-    private static boolean areAllOrdersBeverage(Map<String, Order> orders) {
-        return orders.values()
-                .stream()
+    private static boolean areAllOrdersBeverage(final List<Order> orders) {
+        return orders.stream()
                 .allMatch(Order::isBeverageMenu);
     }
 
-    private static void validateDuplicateMenu(Map<String, Order> orders, String menuName) {
-        if (orders.containsKey(menuName)) {
+    private static void validateDuplicateMenu(final List<Order> orders, final Order order) {
+        if (orders.contains(order)) {
             throw ChristmasException.from(DUPLICATE_ORDER);
         }
     }
 
-    private static int receiveAmount(List<String> menuAndAmount) {
+    private static int receiveAmount(final List<String> menuAndAmount) {
         return parseToInt(menuAndAmount.get(AMOUNT_INDEX), INVALID_ORDERS_INPUT);
     }
 
-    private static String receiveMenu(List<String> menuAndAmount) {
+    private static String receiveMenu(final List<String> menuAndAmount) {
         return menuAndAmount.get(MENU_INDEX);
     }
 }
