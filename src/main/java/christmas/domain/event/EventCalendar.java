@@ -95,7 +95,7 @@ public class EventCalendar {
         if (eventType == SPECIAL_EVENT) {
             return orders.receiveSpecialEventDiscountPrice();
         }
-        return 0;
+        return NONE_PRICE;
     }
 
     public List<EventType> receiveTargetEvents() {
