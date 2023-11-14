@@ -41,10 +41,6 @@ public class Order {
         return menu.getMenuPrice() * amount;
     }
 
-    public boolean isAppetizerMenu() {
-        return menu.getMenuType() == APPETIZER;
-    }
-
     public boolean isMainDishMenu() {
         return menu.getMenuType() == MAIN_DISH;
     }

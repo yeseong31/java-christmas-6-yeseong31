@@ -45,16 +45,6 @@ class OrderTest {
                     .isEqualTo(totalPrice);
         }
 
-        @DisplayName("주문한 메뉴가 애피타이저라면 true를 반환한다")
-        @ParameterizedTest
-        @ValueSource(strings = {"양송이수프", "타파스", "시저샐러드"})
-        void isAppetizerMenu(String menuName) {
-            Order order = Order.from(menuName, 1);
-
-            assertThat(order.isAppetizerMenu())
-                    .isTrue();
-        }
-
         @DisplayName("주문한 메뉴가 메인이라면 true를 반환한다")
         @ParameterizedTest
         @ValueSource(strings = {"티본스테이크", "바비큐립", "해산물파스타", "크리스마스파스타"})

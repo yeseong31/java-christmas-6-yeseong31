@@ -75,24 +75,6 @@ class EventCalendarTest {
                     () -> assertThat(details.get(GIFT_EVENT)).isEqualTo(25000));
         }
 
-        @DisplayName("전달받은 날짜에 대한 이벤트 목록을 반환한다")
-        @ParameterizedTest
-        @CsvSource({
-                "1,CHRISTMAS_EVENT HOLIDAY_EVENT",
-                "3,CHRISTMAS_EVENT WEEKDAY_EVENT SPECIAL_EVENT",
-                "26,WEEKDAY_EVENT",
-                "31,WEEKDAY_EVENT SPECIAL_EVENT"})
-        void receiveTargetEvents(int dayOfMonth, String eventNamesInput) {
-            EventCalendar eventCalendar = EventCalendar.of(dayOfMonth);
-            List<EventType> result = Arrays.stream(eventNamesInput.split(" "))
-                    .map(EventType::valueOf)
-                    .toList();
-
-            List<EventType> eventTypes = eventCalendar.receiveTargetEvents();
-
-            assertThat(eventTypes).isEqualTo(result);
-        }
-
         @Test
         @DisplayName("증정 메뉴 정보를 문자열로 반환한다 (샴페인 1개)")
         void receiveEventMenuInfo() {

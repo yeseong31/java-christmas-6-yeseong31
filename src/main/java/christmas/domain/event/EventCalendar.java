@@ -98,10 +98,6 @@ public class EventCalendar {
         return NONE_PRICE;
     }
 
-    public List<EventType> receiveTargetEvents() {
-        return unmodifiableList(events);
-    }
-
     public String receiveEventMenuInfo() {
         return eventMenu.toString();
     }
@@ -126,15 +122,7 @@ public class EventCalendar {
         final LocalDate reserveDate = convertToLocalDate(dayOfMonth);
         final DayOfWeek dayOfWeek = convertToDayOfWeek(reserveDate);
 
-        return isFriday(dayOfWeek) || isSaturday(dayOfWeek);
-    }
-
-    private static boolean isSaturday(final DayOfWeek dayOfWeek) {
-        return dayOfWeek == SATURDAY;
-    }
-
-    private static boolean isFriday(final DayOfWeek dayOfWeek) {
-        return dayOfWeek == FRIDAY;
+        return dayOfWeek == FRIDAY || dayOfWeek == SATURDAY;
     }
 
     private static Order generateEventMenu() {

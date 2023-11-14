@@ -7,6 +7,7 @@ import static christmas.exception.ErrorMessage.EMPTY_ORDERS_INPUT;
 import static christmas.exception.ErrorMessage.INVALID_DATE_RANGE;
 import static christmas.exception.ErrorMessage.INVALID_INTEGER_INPUT;
 import static christmas.exception.ErrorMessage.INVALID_ORDER_FORMAT;
+import static christmas.service.Parser.parseToInt;
 import static christmas.view.input.InputView.ORDER_MENU_SEPARATOR;
 import static java.lang.Integer.parseInt;
 
@@ -17,16 +18,7 @@ public class InputValidator {
 
     public static void validateDate(final String input) {
         validateContainWhiteSpace(input, EMPTY_INTEGER_INPUT);
-        validateInteger(input);
         validateDateRange(input);
-    }
-
-    private static void validateInteger(final String input) {
-        try {
-            parseInt(input);
-        } catch (NumberFormatException exception) {
-            throw ChristmasException.from(INVALID_INTEGER_INPUT);
-        }
     }
 
     public static void validateMenuAndAmountStrings(final String input) {
@@ -47,7 +39,7 @@ public class InputValidator {
     }
 
     private static void validateDateRange(final String input) {
-        final int targetDate = parseInt(input);
+        final int targetDate = parseToInt(input, INVALID_DATE_RANGE);
         if (isSmallerThanLowerBound(targetDate) || isGreaterThanUpperBound(targetDate)) {
             throw ChristmasException.from(INVALID_DATE_RANGE);
         }
