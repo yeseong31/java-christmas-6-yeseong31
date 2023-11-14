@@ -11,6 +11,7 @@ import static christmas.domain.event.constants.Discount.SPECIAL_DISCOUNT;
 import static christmas.domain.event.constants.Discount.WEEKDAY_DISCOUNT;
 import static christmas.exception.ErrorMessage.DUPLICATE_ORDER;
 import static christmas.exception.ErrorMessage.INVALID_ORDERS_INPUT;
+import static christmas.exception.ErrorMessage.INVALID_ORDER_FORMAT;
 import static christmas.service.Parser.convertToLocalDate;
 import static christmas.service.Parser.parseToInt;
 import static christmas.service.Parser.splitByDelimiter;
@@ -28,6 +29,7 @@ public class Orders {
     private static final int MENU_INDEX = 0;
     private static final int AMOUNT_INDEX = 1;
     private static final int DECREASE_DAY_OF_MONTH = 1;
+    private static final int VALIDATE_MENU_AMOUNT_SIZE = 2;
     private static final int MINIMUM_PURCHASE_PRICE = 10000;
     private static final int ELIGIBLE_GIFT_EVENT_PRIZE = 120000;
     private static final String MENU_AND_AMOUNT_SEPARATOR = "-";
@@ -124,13 +126,20 @@ public class Orders {
             validateStringWithSeparator(orderInput, MENU_AND_AMOUNT_SEPARATOR);
 
             final List<String> menuAndAmount = splitByDelimiter(orderInput, MENU_AND_AMOUNT_SEPARATOR);
-            final Order order = Order.from(receiveMenu(menuAndAmount), receiveAmount(menuAndAmount));
+            validateSize(menuAndAmount);
 
+            final Order order = Order.from(receiveMenu(menuAndAmount), receiveAmount(menuAndAmount));
             validateDuplicateMenu(orders, order);
             orders.add(order);
         }
 
         return orders;
+    }
+
+    private static void validateSize(List<String> menuAndAmount) {
+        if (menuAndAmount.size() != VALIDATE_MENU_AMOUNT_SIZE) {
+            throw ChristmasException.from(INVALID_ORDER_FORMAT);
+        }
     }
 
     private static void validateOrders(final List<Order> orders) {
