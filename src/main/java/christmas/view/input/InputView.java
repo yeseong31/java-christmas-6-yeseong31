@@ -12,23 +12,19 @@ public class InputView {
 
     public static final String ORDER_MENU_SEPARATOR = ",";
 
-    public static InputView create() {
-        return new InputView();
-    }
-
-    public int readDate() {
+    public static int readDate() {
         String input = readLine();
         validateDate(input);
         return parseToInt(input, INVALID_INTEGER_INPUT);
     }
 
-    public List<String> readMenuAndAmountStrings() {
+    public static List<String> readMenuAndAmountStrings() {
         String input = readLine();
         validateMenuAndAmountStrings(input);
         return splitByDelimiter(input, ORDER_MENU_SEPARATOR);
     }
 
-    private String readLine() {
+    private static String readLine() {
         return camp.nextstep.edu.missionutils.Console.readLine();
     }
 }
