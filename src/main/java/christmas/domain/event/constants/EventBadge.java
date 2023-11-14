@@ -11,12 +11,12 @@ public enum EventBadge {
     private final String name;
     private final int basePrice;
 
-    EventBadge(String name, int basePrice) {
+    EventBadge(final String name, final int basePrice) {
         this.name = name;
         this.basePrice = basePrice;
     }
 
-    public static EventBadge receiveBadge(int totalBenefitPrice) {
+    public static EventBadge receiveBadge(final int totalBenefitPrice) {
         if (totalBenefitPrice >= SANTA_BADGE.basePrice) {
             return SANTA_BADGE;
         }

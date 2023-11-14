@@ -44,7 +44,7 @@ public class EventCalendar {
     }
 
     public int calculateEstimatedPriceAfterDiscount(final Orders orders) {
-        int sumValue = receiveBenefitDetailsWithoutGiftEvent(orders).values()
+        final int sumValue = receiveBenefitDetailsWithoutGiftEvent(orders).values()
                 .stream()
                 .mapToInt(Integer::intValue)
                 .sum();
@@ -60,7 +60,7 @@ public class EventCalendar {
     }
 
     public Map<EventType, Integer> receiveBenefitDetails(final Orders orders) {
-        Map<EventType, Integer> result = receiveBenefitDetailsWithoutGiftEvent(orders);
+        final Map<EventType, Integer> result = receiveBenefitDetailsWithoutGiftEvent(orders);
 
         if (orders.isEligibleForPrize()) {
             result.put(GIFT_EVENT, receiveEventMenuPrice());
@@ -69,11 +69,11 @@ public class EventCalendar {
         return result;
     }
 
-    private Map<EventType, Integer> receiveBenefitDetailsWithoutGiftEvent(Orders orders) {
-        Map<EventType, Integer> result = new HashMap<>();
+    private Map<EventType, Integer> receiveBenefitDetailsWithoutGiftEvent(final Orders orders) {
+        final Map<EventType, Integer> result = new HashMap<>();
 
         for (EventType eventType : events) {
-            int discountPrice = calculateDiscountPrice(orders, eventType);
+            final int discountPrice = calculateDiscountPrice(orders, eventType);
             if (discountPrice > NONE_PRICE) {
                 result.put(eventType, discountPrice);
             }
@@ -82,7 +82,7 @@ public class EventCalendar {
         return result;
     }
 
-    private int calculateDiscountPrice(Orders orders, EventType eventType) {
+    private int calculateDiscountPrice(final Orders orders, final EventType eventType) {
         if (eventType == CHRISTMAS_EVENT) {
             return orders.receiveChristmasEventDiscountPrice();
         }
@@ -110,7 +110,7 @@ public class EventCalendar {
         return generateEventMenu().receiveOrderPrice();
     }
 
-    public static boolean isChristmasPeriod(int dayOfMonth) {
+    public static boolean isChristmasPeriod(final int dayOfMonth) {
         return isDayOfMonthWithinRange(CHRISTMAS_EVENT, dayOfMonth);
     }
 
@@ -129,11 +129,11 @@ public class EventCalendar {
         return isFriday(dayOfWeek) || isSaturday(dayOfWeek);
     }
 
-    private static boolean isSaturday(DayOfWeek dayOfWeek) {
+    private static boolean isSaturday(final DayOfWeek dayOfWeek) {
         return dayOfWeek == SATURDAY;
     }
 
-    private static boolean isFriday(DayOfWeek dayOfWeek) {
+    private static boolean isFriday(final DayOfWeek dayOfWeek) {
         return dayOfWeek == FRIDAY;
     }
 

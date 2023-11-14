@@ -43,14 +43,14 @@ public class OutputView {
         println(ASK_ORDER_MENU_AND_AMOUNT.getMessage());
     }
 
-    public static void printPreviewEventBenefits(int date) {
+    public static void printPreviewEventBenefits(final int date) {
         println(format(
                 PREVIEW_EVENT_BENEFITS.getMessage(),
                 FIXED_MONTH.getValue(),
                 date));
     }
 
-    public static void printOrderMenu(Orders orders) {
+    public static void printOrderMenu(final Orders orders) {
         println();
         println(PRINT_ORDER_MENU.getMessage());
         for (String orderInfo : orders.receiveOrdersInfo()) {
@@ -58,7 +58,7 @@ public class OutputView {
         }
     }
 
-    public static void printTotalOrderAmountBeforeDiscount(Orders orders) {
+    public static void printTotalOrderAmountBeforeDiscount(final Orders orders) {
         println();
         println(PRINT_TOTAL_ORDER_AMOUNT_BEFORE_DISCOUNT.getMessage());
 
@@ -67,7 +67,7 @@ public class OutputView {
                 convertFormatPrice(orders.receiveTotalOrderPrice())));
     }
 
-    public static void printGiftMenu(EventCalendar eventCalendar, Orders orders) {
+    public static void printGiftMenu(final EventCalendar eventCalendar, final Orders orders) {
         println();
         println(PRINT_GIFT_MENU.getMessage());
 
@@ -79,15 +79,15 @@ public class OutputView {
         println(NOT_SUBJECT_EVENT);
     }
 
-    public static void printBenefitsDetails(EventCalendar eventCalendar, Orders orders) {
+    public static void printBenefitsDetails(final EventCalendar eventCalendar, final Orders orders) {
         println();
         println(PRINT_BENEFITS_DETAILS.getMessage());
 
-        Map<EventType, Integer> benefitDetails = eventCalendar.receiveBenefitDetails(orders);
+        final Map<EventType, Integer> benefitDetails = eventCalendar.receiveBenefitDetails(orders);
         printAllBenefitDetails(benefitDetails);
     }
 
-    private static void printAllBenefitDetails(Map<EventType, Integer> benefitDetails) {
+    private static void printAllBenefitDetails(final Map<EventType, Integer> benefitDetails) {
         if (benefitDetails.isEmpty()) {
             println(NOT_SUBJECT_EVENT);
             return;
@@ -101,7 +101,7 @@ public class OutputView {
         }
     }
 
-    public static void printTotalBenefitPrice(EventCalendar eventCalendar, Orders orders) {
+    public static void printTotalBenefitPrice(final EventCalendar eventCalendar, final Orders orders) {
         println();
         println(PRINT_TOTAL_BENEFIT_AMOUNT.getMessage());
 
@@ -115,7 +115,7 @@ public class OutputView {
                 convertFormatPrice(eventCalendar.receiveTotalBenefitPrice(orders))));
     }
 
-    public static void printEstimatedPriceAfterDiscount(EventCalendar eventCalendar, Orders orders) {
+    public static void printEstimatedPriceAfterDiscount(final EventCalendar eventCalendar, final Orders orders) {
         println();
         println(PRINT_ESTIMATED_PRICE_AFTER_DISCOUNT.getMessage());
 
@@ -129,11 +129,11 @@ public class OutputView {
                 convertFormatPrice(eventCalendar.calculateEstimatedPriceAfterDiscount(orders))));
     }
 
-    public static void printEventBadge(EventCalendar eventCalendar, Orders orders) {
+    public static void printEventBadge(final EventCalendar eventCalendar, final Orders orders) {
         println();
         println(PRINT_MONTHLY_EVENT_BADGES.getMessage());
 
-        int price = eventCalendar.receiveTotalBenefitPrice(orders);
+        final int price = eventCalendar.receiveTotalBenefitPrice(orders);
         println(EventBadge.receiveBadge(price).getName());
     }
 

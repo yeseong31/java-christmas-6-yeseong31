@@ -13,13 +13,13 @@ public class InputView {
     public static final String ORDER_MENU_SEPARATOR = ",";
 
     public static int readDate() {
-        String input = readLine();
+        final String input = readLine();
         validateDate(input);
         return parseToInt(input, INVALID_INTEGER_INPUT);
     }
 
     public static List<String> readMenuAndAmountStrings() {
-        String input = readLine();
+        final String input = readLine();
         validateMenuAndAmountStrings(input);
         return splitByDelimiter(input, ORDER_MENU_SEPARATOR);
     }

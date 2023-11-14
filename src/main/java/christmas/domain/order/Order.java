@@ -28,12 +28,12 @@ public class Order {
     }
 
     public static Order from(final String menuName, final int amount) {
-        Menu menu = receiveMenu(menuName);
+        final Menu menu = receiveMenu(menuName);
         validateAmount(amount);
         return new Order(menu, amount);
     }
 
-    public int receiveDiscountPrice(Discount discount) {
+    public int receiveDiscountPrice(final Discount discount) {
         return discount.getDiscountPrice() * amount;
     }
 
@@ -57,17 +57,17 @@ public class Order {
         return menu.getMenuType() == BEVERAGE;
     }
 
-    private static void validateAmount(int amount) {
+    private static void validateAmount(final int amount) {
         if (isLessThanMinimumAmount(amount) || isGreaterThanMaximumAmount(amount)) {
             throw ChristmasException.from(INVALID_ORDER_AMOUNT);
         }
     }
 
-    private static boolean isGreaterThanMaximumAmount(int amount) {
+    private static boolean isGreaterThanMaximumAmount(final int amount) {
         return amount > MAX_ORDER_AMOUNT;
     }
 
-    private static boolean isLessThanMinimumAmount(int amount) {
+    private static boolean isLessThanMinimumAmount(final int amount) {
         return amount < LEAST_ORDER_AMOUNT;
     }
 

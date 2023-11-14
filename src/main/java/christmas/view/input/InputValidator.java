@@ -21,7 +21,7 @@ public class InputValidator {
         validateDateRange(input);
     }
 
-    private static void validateInteger(String input) {
+    private static void validateInteger(final String input) {
         try {
             parseInt(input);
         } catch (NumberFormatException exception) {
@@ -34,30 +34,30 @@ public class InputValidator {
         validateStringWithSeparator(input, ORDER_MENU_SEPARATOR);
     }
 
-    public static void validateStringWithSeparator(String input, String separator) {
+    public static void validateStringWithSeparator(final String input, final String separator) {
         if (hasStartSeparator(input, separator) || hasEndSeparator(input, separator)) {
             throw ChristmasException.from(INVALID_ORDER_FORMAT);
         }
     }
 
-    public static void validateContainWhiteSpace(final String input, ErrorMessage errorMessage) {
+    public static void validateContainWhiteSpace(final String input, final ErrorMessage errorMessage) {
         if (input.isBlank() || hasWhiteSpace(input)) {
             throw ChristmasException.from(errorMessage);
         }
     }
 
-    private static void validateDateRange(String input) {
-        int targetDate = parseInt(input);
+    private static void validateDateRange(final String input) {
+        final int targetDate = parseInt(input);
         if (isSmallerThanLowerBound(targetDate) || isGreaterThanUpperBound(targetDate)) {
             throw ChristmasException.from(INVALID_DATE_RANGE);
         }
     }
 
-    private static boolean isGreaterThanUpperBound(int targetDate) {
+    private static boolean isGreaterThanUpperBound(final int targetDate) {
         return targetDate > DATE_UPPER_BOUND.getValue();
     }
 
-    private static boolean isSmallerThanLowerBound(int targetDate) {
+    private static boolean isSmallerThanLowerBound(final int targetDate) {
         return targetDate < DATE_LOWER_BOUND.getValue();
     }
 
