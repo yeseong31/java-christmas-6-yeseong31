@@ -5,11 +5,9 @@ import static christmas.domain.event.constants.DateConstraint.DATE_UPPER_BOUND;
 import static christmas.exception.ErrorMessage.EMPTY_INTEGER_INPUT;
 import static christmas.exception.ErrorMessage.EMPTY_ORDERS_INPUT;
 import static christmas.exception.ErrorMessage.INVALID_DATE_RANGE;
-import static christmas.exception.ErrorMessage.INVALID_INTEGER_INPUT;
 import static christmas.exception.ErrorMessage.INVALID_ORDER_FORMAT;
 import static christmas.service.Parser.parseToInt;
 import static christmas.view.input.InputView.ORDER_MENU_SEPARATOR;
-import static java.lang.Integer.parseInt;
 
 import christmas.exception.ChristmasException;
 import christmas.exception.ErrorMessage;
