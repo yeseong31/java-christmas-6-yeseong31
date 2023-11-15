@@ -1,6 +1,6 @@
 package christmas.exception;
 
-public class ChristmasException extends IllegalArgumentException{
+public class ChristmasException extends IllegalArgumentException {
 
     private ChristmasException(ErrorMessage errorMessage, Exception exception) {
         super(errorMessage.getMessage(), exception);

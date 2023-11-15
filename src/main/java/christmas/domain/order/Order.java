@@ -1,7 +1,6 @@
 package christmas.domain.order;
 
 import static christmas.domain.menu.Menu.receiveMenu;
-import static christmas.domain.menu.MenuType.APPETIZER;
 import static christmas.domain.menu.MenuType.BEVERAGE;
 import static christmas.domain.menu.MenuType.DESSERT;
 import static christmas.domain.menu.MenuType.MAIN_DISH;

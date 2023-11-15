@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import christmas.domain.event.constants.EventType;
 import christmas.domain.order.Orders;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;

@@ -11,7 +11,6 @@ import static christmas.service.Parser.convertToLocalDate;
 import static christmas.view.output.OutputView.NONE_PRICE;
 import static java.time.DayOfWeek.FRIDAY;
 import static java.time.DayOfWeek.SATURDAY;
-import static java.util.Collections.unmodifiableList;
 
 import christmas.domain.event.constants.EventType;
 import christmas.domain.order.Order;

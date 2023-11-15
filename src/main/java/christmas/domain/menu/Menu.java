@@ -39,8 +39,7 @@ public enum Menu {
 
     public static Menu receiveMenu(final String name) {
         for (Menu menu : values()) {
-            final String menuName = menu.getMenuName();
-            if (menuName.equals(name)) {
+            if (menu.getMenuName().equals(name)) {
                 return menu;
             }
         }
