@@ -1,7 +1,7 @@
 package christmas;
 
 import camp.nextstep.edu.missionutils.Console;
-import christmas.domain.controller.EventController;
+import christmas.controller.EventController;
 
 public class Application {
 

@@ -1,4 +1,4 @@
-package christmas.domain.controller;
+package christmas.controller;
 
 import static christmas.view.output.OutputView.printAskOrderMenuAndAmount;
 import static christmas.view.output.OutputView.printAskReservationDate;
