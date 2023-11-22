@@ -27,39 +27,39 @@ public enum Menu {
     CHAMPAGNE("샴페인", 25000, BEVERAGE),
     ;
 
-    private final String menuName;
-    private final int menuPrice;
-    private final MenuType menuType;
+    private final String name;
+    private final int price;
+    private final MenuType type;
 
-    Menu(final String menuName, final int menuPrice, final MenuType menuType) {
-        this.menuName = menuName;
-        this.menuPrice = menuPrice;
-        this.menuType = menuType;
+    Menu(final String name, final int price, final MenuType type) {
+        this.name = name;
+        this.price = price;
+        this.type = type;
     }
 
     public static Menu receiveMenu(final String name) {
         for (Menu menu : values()) {
-            if (menu.getMenuName().equals(name)) {
+            if (menu.getName().equals(name)) {
                 return menu;
             }
         }
         throw ChristmasException.from(NOT_FOUND_MENU);
     }
 
-    public String getMenuName() {
-        return menuName;
+    public String getName() {
+        return name;
     }
 
-    public int getMenuPrice() {
-        return menuPrice;
+    public int getPrice() {
+        return price;
     }
 
-    public MenuType getMenuType() {
-        return menuType;
+    public MenuType getType() {
+        return type;
     }
 
     @Override
     public String toString() {
-        return menuName;
+        return name;
     }
 }

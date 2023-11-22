@@ -37,19 +37,19 @@ public class Order {
     }
 
     public int receiveOrderPrice() {
-        return menu.getMenuPrice() * amount;
+        return menu.getPrice() * amount;
     }
 
     public boolean isMainDishMenu() {
-        return menu.getMenuType() == MAIN_DISH;
+        return menu.getType() == MAIN_DISH;
     }
 
     public boolean isDessertMenu() {
-        return menu.getMenuType() == DESSERT;
+        return menu.getType() == DESSERT;
     }
 
     public boolean isBeverageMenu() {
-        return menu.getMenuType() == BEVERAGE;
+        return menu.getType() == BEVERAGE;
     }
 
     private static void validateAmount(final int amount) {
