@@ -1,21 +1,25 @@
 package christmas.view.input;
 
+import christmas.domain.dto.response.OrderDateResponseDto;
+
+import java.util.List;
+
 import static christmas.exception.ErrorMessage.INVALID_INTEGER_INPUT;
 import static christmas.service.Parser.parseToInt;
 import static christmas.service.Parser.splitByDelimiter;
 import static christmas.view.input.InputValidator.validateDate;
 import static christmas.view.input.InputValidator.validateMenuAndAmountStrings;
 
-import java.util.List;
-
 public class InputView {
 
     public static final String ORDER_MENU_SEPARATOR = ",";
 
-    public static int readDate() {
+    public static OrderDateResponseDto readDate() {
         final String input = readLine();
         validateDate(input);
-        return parseToInt(input, INVALID_INTEGER_INPUT);
+
+        return new OrderDateResponseDto(
+                parseToInt(input, INVALID_INTEGER_INPUT));
     }
 
     public static List<String> readMenuAndAmountStrings() {

@@ -1,23 +1,14 @@
 package christmas.controller;
 
-import static christmas.view.output.OutputView.printAskOrderMenuAndAmount;
-import static christmas.view.output.OutputView.printAskReservationDate;
-import static christmas.view.output.OutputView.printBenefitsDetails;
-import static christmas.view.output.OutputView.printErrorMessage;
-import static christmas.view.output.OutputView.printEstimatedPriceAfterDiscount;
-import static christmas.view.output.OutputView.printEventBadge;
-import static christmas.view.output.OutputView.printGiftMenu;
-import static christmas.view.output.OutputView.printHelloPlanner;
-import static christmas.view.output.OutputView.printOrderMenu;
-import static christmas.view.output.OutputView.printPreviewEventBenefits;
-import static christmas.view.output.OutputView.printTotalBenefitPrice;
-import static christmas.view.output.OutputView.printTotalOrderAmountBeforeDiscount;
-
+import christmas.domain.dto.response.OrderDateResponseDto;
 import christmas.domain.event.EventCalendar;
 import christmas.domain.order.Orders;
 import christmas.exception.ChristmasException;
 import christmas.view.input.InputView;
+
 import java.util.List;
+
+import static christmas.view.output.OutputView.*;
 
 public class EventController {
 
@@ -25,11 +16,11 @@ public class EventController {
     }
 
     public static void start() {
-        int date = receiveDate();
-        Orders orders = receiveOrders(date);
-        EventCalendar eventCalendar = EventCalendar.of(date);
+        OrderDateResponseDto orderDateResponseDto = receiveDate();
+        Orders orders = receiveOrders(orderDateResponseDto.date());
+        EventCalendar eventCalendar = EventCalendar.of(orderDateResponseDto.date());
 
-        showEventProcess(date, orders, eventCalendar);
+        showEventProcess(orderDateResponseDto.date(), orders, eventCalendar);
     }
 
     private static void showEventProcess(final int date, final Orders orders, final EventCalendar eventCalendar) {
@@ -59,14 +50,14 @@ public class EventController {
         }
     }
 
-    private static int receiveDate() {
+    private static OrderDateResponseDto receiveDate() {
         printHelloPlanner();
         printAskReservationDate();
 
         return repeatInputDate();
     }
 
-    private static int repeatInputDate() {
+    private static OrderDateResponseDto repeatInputDate() {
         try {
             return InputView.readDate();
         } catch (ChristmasException exception) {
